@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y \
 RUN git clone https://github.com/streamlit/streamlit-example.git /app
 
 # Copy custom files into /app (overwriting repo files if necessary)
-COPY frontend.py Pipfile Pipfile.lock .env /app/
-
+COPY frontend.py Pipfile Pipfile.lock /app/
 WORKDIR /app
 
 RUN pip3 install -U pip && \
