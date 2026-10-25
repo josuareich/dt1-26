@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile.frontend
     image: dt1_frontend:latest
     ports:
-      - "127.0.0.1:8501:8501"
+      - "0.0.0.0:8501:8501"
     depends_on:
       - api
     environment:
