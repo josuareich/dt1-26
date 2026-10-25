@@ -26,21 +26,25 @@ def query(payload, model_id, api_token):
     return response
 
 
+
 @app.route("/chat", methods=["GET"])
 def call_openrouter_chat_model():
     model_id = req.args.get("model_id")
     logging.debug(f"The model ID for the openrouter model is {model_id}")
-    openrouter_token = req.args.get("openrouter_token")
-    logging.debug(f"openrouter API Token: {openrouter_token}")
+
+    openrouter_token = os.getenv("OPENROUTER_API_KEY")
+    if not openrouter_token:
+        return jsonify({"error": "API key not configured"}), 500
+
     questions = req.args.get("input")
     data = query(
         {"input": f"{questions}"},
         model_id,
         openrouter_token,
     )
+
     logging.debug(f"Model output: {data}")
     output = jsonify({"ack": data.choices[0].message.content})
-    output.headers.add("Access-Control-Allow-Origin", "*")
     return output
 
 
@@ -53,4 +57,4 @@ def ping():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))
-    app.run(debug=True, host="0.0.0.0", port=port)
+    app.run(debug=False, host="0.0.0.0", port=port)
